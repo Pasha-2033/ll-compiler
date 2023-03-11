@@ -1,0 +1,12 @@
+{
+    "capacity": 64,
+    "delete_object_files": "no",
+    "input_files": [
+        "input/asm",
+        "input/fibonachi"
+    ],
+    "output_dir": "output/",
+    "file_merging": [
+        "#comment: will be used to combine a few insignificant to one significant asm code, in future"
+    ]
+}
