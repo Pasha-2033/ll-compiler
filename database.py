@@ -108,4 +108,5 @@ instruction_list = {
     'write': write,
     'clr_cash': clr_cash,
     'goto': goto
+    #loop (like goto, but in case while(a--))
 }
