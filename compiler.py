@@ -3,6 +3,7 @@
 #error codes
 #E0001 - found duplicate flag
 #E0002 - command contains wrong args
+#E0003 - unknown instruction
 import json
 import database
 import os
@@ -55,10 +56,14 @@ def compile_parsed(code_data, out_file):
             command = 0 #по умолчанию команды идут подряд
             for subinstruction in code_data[i][1]:
                 if len(subinstruction) > 0:
-                    try:
-                        command ^= database.instruction_list[subinstruction[0]](subinstruction[1:], code_data, outf)
-                    except:
-                        print(f"error: E0002 on line {code_data[i][2]} in {code_data[i][3]}.asm file, wrong command \"{' '.join(str(item) for item in subinstruction)}\"")
+                    if subinstruction[0] in database.instruction_list:
+                        try:
+                            command ^= database.instruction_list[subinstruction[0]](subinstruction[1:], code_data, outf)
+                        except:
+                            print(f"error: E0002 on line {code_data[i][2]} in {code_data[i][3]}.asm file, wrong command arguments [{', '.join(str(item) for item in subinstruction[1:])}] for \"{subinstruction[0]}\" command")
+                            compile_file = False
+                    else:
+                        print(f"error: E0003 on line {code_data[i][2]} in {code_data[i][3]}.asm file, unknown command \"{subinstruction[0]}\"")
                         compile_file = False
             ############################################################################################
             if compile_file:
@@ -79,4 +84,4 @@ with open("config.json", "r") as config:
     cap = dictionary.get("capacity", 64)
 for f in input_files:
     compile_parsed(parse_file(f), f)
-#print(input("press Enter to close compiler..."))
+print(input("press Enter to close compiler..."))
