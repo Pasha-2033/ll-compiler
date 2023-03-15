@@ -84,7 +84,7 @@ def bs(args, commands, out):
     res = BOOL_OPERATION.get(args[0])
     if res == None:
         raise
-    select = (int(args[1]) % BS_MAX) << BS_SHIFT if len(args) > 1 else 0
+    select = (int(args[1]) % BS_MAX) << BS_SHIFT if len(args) > 1 and args[0] == "[bit]" else 0
     return res | select
 def write(args, commands, out):
     return WRITE_TO_RAM
